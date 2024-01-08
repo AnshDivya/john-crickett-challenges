@@ -1,0 +1,2 @@
+#!/bin/bash
+java -jar ~/IdeaProjects/john-crickett-challenges/src/main/java/Ccwc.jar "$@"
