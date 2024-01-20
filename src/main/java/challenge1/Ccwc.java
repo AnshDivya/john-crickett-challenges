@@ -12,7 +12,7 @@ public class Ccwc {
         private long byteCount, wordCount, lineCount, charCount;
     }
     public static void main(String... args) {
-        if(isPipedInput()) {
+        if(isPipedInput() && args.length < 2) {
             final String option = args.length == 0 ? "-a" : args[0];
             try {
                 printResult(option, processCommand(option, System.in), null);
@@ -74,6 +74,7 @@ public class Ccwc {
 
     private static Result processCommand(String option, InputStream inputStream) {
         final var result = new Result();
+
         try {
             byte[] bytes = inputStream.readAllBytes();
             switch (option) {
@@ -106,7 +107,12 @@ public class Ccwc {
     }
 
     private static boolean isPipedInput() {
-        return System.console() == null;
+        try {
+            return System.console() == null && System.in.available() <= 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private static long countCharacters(byte[] bytes) {
